@@ -112,7 +112,6 @@ function BlueskyAuth(){
 
 function getPostDetails(url){
   let details = {}
-  //url = 'https://www.numerama.com/tech/1209008-un-bon-smartphone-pas-cher-cest-possible-notre-selection-a-moins-de-300-euros.html'
   let rep = UrlFetchApp.fetch(url,{ muteHttpExceptions: true})
   let html= rep.getContentText();
   if(html.indexOf('property="og:image"') < 0){
