@@ -1,2 +1,6 @@
 # apps-script-for-bluesky-social
-Some Apps Script code to publish message and connect to Bluesky Social (Bsky.app)
+
+This repository will help to connect to Bluesky Social (bsky.app) from Google Apps Script.
+
+First code : Gives the basics to connect, get and post message.
+
