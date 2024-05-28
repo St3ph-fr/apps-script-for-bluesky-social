@@ -26,6 +26,7 @@ function publishFromRSS() {
   const root = xml.getRootElement();
   const channel = root.getChildren('channel')
   const entries = channel[0].getChildren("item");
+  var newArrayLink = [] ;
   for(var i = 0 ; i < entries.length ; i++){
     let entry = entries[i]
     let link = entry.getChild("link").getValue();
@@ -34,9 +35,10 @@ function publishFromRSS() {
       if(!linkDone.init){
         publishNews(title,link,auth)
       }
-      linkDone.items.unshift(link)
-      if(!linkDone.init){ linkDone.items.pop()}
+      // linkDone.items.unshift(link)
+      // if(!linkDone.init){ linkDone.items.pop()}
     }
+    newArrayLink.push(link) ;
     // return false; // Uncomment to do just one publication
   }
   if(linkDone.init){ linkDone.init = false ;}
@@ -48,6 +50,9 @@ function publishFromRSS() {
 function publishNews(title,link,auth){
   let details = getPostDetails(link);
   let description = details.description ? details.description : title;
+  if(description.length > 300){
+    description = description.substring(0,296) + "..."
+  }
   let message = { "collection": "app.bsky.feed.post", "repo": auth.did, "record": 
       { "text":description, "createdAt": new Date().toISOString(), "$type": "app.bsky.feed.post",
       "embed": {
