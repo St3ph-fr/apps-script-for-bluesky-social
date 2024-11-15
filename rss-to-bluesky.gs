@@ -1,5 +1,5 @@
-const RSS_FEED = 'YOUR FEED URL';
-const HANDLE = 'YOUR HANDLE';
+const RSS_FEED = 'YOUR FEED URL'
+const HANDLE='YOUR HANDLE';
 const DID_URL="https://bsky.social/xrpc/com.atproto.identity.resolveHandle";
 const APP_PASSWORD = "YOUR APP PASSWORD";
 const API_KEY_URL= "https://bsky.social/xrpc/com.atproto.server.createSession";
@@ -8,7 +8,7 @@ const POST_FEED_URL = "https://bsky.social/xrpc/com.atproto.repo.createRecord";
 const UPLOAD_IMG_URL = "https://bsky.social/xrpc/com.atproto.repo.uploadBlob";
 
 function setupTrigger(){ // To be run to create trigger
-  ScriptApp.newTrigger('publishFromRSS').timeBased().everyMinutes(15).create();
+  ScriptApp.newTrigger().timeBased().everyMinutes(15).create();
 }
 
 function publishFromRSS() {
@@ -26,7 +26,7 @@ function publishFromRSS() {
   const root = xml.getRootElement();
   const channel = root.getChildren('channel')
   const entries = channel[0].getChildren("item");
-  var newArrayLink = [] ;
+  var newArrayLink = []
   for(var i = 0 ; i < entries.length ; i++){
     let entry = entries[i]
     let link = entry.getChild("link").getValue();
@@ -38,11 +38,12 @@ function publishFromRSS() {
       // linkDone.items.unshift(link)
       // if(!linkDone.init){ linkDone.items.pop()}
     }
-    newArrayLink.push(link) ;
+    newArrayLink.push(link)
     // return false; // Uncomment to do just one publication
   }
   if(linkDone.init){ linkDone.init = false ;}
   linkDone.lastRun = new Date().getTime();
+  linkDone.items = newArrayLink;
   PropertiesService.getScriptProperties().setProperty('LINKS',JSON.stringify(linkDone))
   console.log(linkDone)
 }
@@ -50,9 +51,8 @@ function publishFromRSS() {
 function publishNews(title,link,auth){
   let details = getPostDetails(link);
   let description = details.description ? details.description : title;
-  if(description.length > 300){
-    description = description.substring(0,296) + "..."
-  }
+  title = decodeSpecialChars(title);
+  description = decodeSpecialChars(description)
   let message = { "collection": "app.bsky.feed.post", "repo": auth.did, "record": 
       { "text":description, "createdAt": new Date().toISOString(), "$type": "app.bsky.feed.post",
       "embed": {
@@ -148,4 +148,11 @@ function decodeHTML(txt) {
           return map.hasOwnProperty($1) ? map[$1] : $0;
       }
   });
+}
+
+function decodeSpecialChars(text) {
+  return text
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&apos;/g, "'");
 }
