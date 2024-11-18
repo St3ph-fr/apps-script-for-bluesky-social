@@ -154,5 +154,6 @@ function decodeSpecialChars(text) {
   return text
     .replace(/&quot;/g, '"')
     .replace(/&amp;/g, '&')
+    .replace(/&nbsp;/g, ' ')
     .replace(/&apos;/g, "'");
 }
