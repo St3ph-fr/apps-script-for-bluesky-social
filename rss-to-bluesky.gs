@@ -8,7 +8,7 @@ const POST_FEED_URL = "https://bsky.social/xrpc/com.atproto.repo.createRecord";
 const UPLOAD_IMG_URL = "https://bsky.social/xrpc/com.atproto.repo.uploadBlob";
 
 function setupTrigger(){ // To be run to create trigger
-  ScriptApp.newTrigger().timeBased().everyMinutes(15).create();
+  ScriptApp.newTrigger('publishFromRSS').timeBased().everyMinutes(15).create();
 }
 
 function publishFromRSS() {
