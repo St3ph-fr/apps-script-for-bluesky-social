@@ -32,9 +32,7 @@ function publishFromRSS() {
     let link = entry.getChild("link").getValue();
     let title =  entry.getChild("title").getValue();
     if(linkDone.items.indexOf(link)<0 ){
-      if(!linkDone.init){
-        publishNews(title,link,auth)
-      }
+      publishNews(title,link,auth)
       // linkDone.items.unshift(link)
       // if(!linkDone.init){ linkDone.items.pop()}
     }
